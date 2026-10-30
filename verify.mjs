@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process'
 import { mkdirSync } from 'node:fs'
 const ROOT = import.meta.dirname
 mkdirSync(ROOT + '/shots', { recursive: true })
-const PORT = 5417
+const PORT = +process.env.PORT || 5617
 const server = spawn(process.execPath, ['server.mjs'], { cwd: ROOT, env: { ...process.env, PORT: String(PORT) } })
 await new Promise(r => setTimeout(r, 400))
 const URL0 = `http://localhost:${PORT}/`
@@ -45,6 +45,30 @@ const fit = q => q.evaluate(() => {
   const c = document.querySelector('#corner').getBoundingClientRect()
   for (const el of document.querySelectorAll('main:not([hidden]) .noise,main:not([hidden]) .logo .main,main:not([hidden]) .resCard,main:not([hidden]) .panel,main:not([hidden]) .card:not([hidden])')) { if (el.closest('[hidden]')) continue; const r = el.getBoundingClientRect(); if (r.width && r.right > c.left + 2 && r.left < c.right && r.top < c.bottom - 2 && r.bottom > c.top) over.push('corner-overlap:' + (el.id || el.className)) }
   return { H, over: over.slice(0, 6) }
+})
+// Xでポスト: window.open を差し替えて、開かれるURLを取る
+const xCheck = async (p, ns, want, tag, pub) => {
+  await p.evaluate(() => { window.__opened = []; window.open = (...a) => { window.__opened.push(a); return null } })
+  const vis = await p.isVisible('#bX'); expect(vis, 'Xボタンが見えない')
+  await p.click('#bX')
+  const r = await p.evaluate(ns => ({ o: window.__opened, api: window[ns].xPost(), label: document.querySelector('#bX').textContent.trim(), bg: getComputedStyle(document.querySelector('#bX')).backgroundColor, svg: !!document.querySelector('#bX svg path') }), ns)
+  expect(r.o.length === 1, 'open回数 ' + r.o.length)
+  const [href, target, feat] = r.o[0], u = new URL(href), text = u.searchParams.get('text')
+  expect(href.startsWith('https://x.com/intent/post?') && target === '_blank' && /noopener/.test(feat), href + ' ' + target + ' ' + feat)
+  expect(u.searchParams.get('url') === pub && !/https?:/.test(text), 'url ' + href)
+  expect(text.includes(tag) && want.every(w => text.includes(String(w))), 'text ' + text + ' want ' + want.join(','))
+  expect(text === r.api.text && r.svg && r.bg === 'rgb(0, 0, 0)', JSON.stringify(r))
+  return { label: r.label, text }
+}
+// 保存・Xボタンの文字が1行に収まっている（折り返しなし）
+const oneLine = p => p.evaluate(() => {
+  const bad = []
+  for (const id of ['#bSave', '#bX']) { const b = document.querySelector(id); if (!b) { bad.push(id + ':none'); continue }
+    const sp = [...b.querySelectorAll('span')].pop() || b, rg = document.createRange(); rg.selectNodeContents(sp)
+    const tops = new Set([...rg.getClientRects()].filter(x => x.width > 0).map(x => Math.round(x.top)))
+    const br = b.getBoundingClientRect(), sr = sp.getBoundingClientRect()
+    if (tops.size > 1 || sr.left < br.left - 1 || sr.right > br.right + 1) bad.push(id + ':' + tops.size + 'lines') }
+  return bad
 })
 const SIZES = [[360, 640, 'small'], [390, 844, 'phone'], [844, 390, 'land'], [667, 375, 'land-se'], [768, 1024, 'tab'], [1440, 900, 'pc']]
 
@@ -132,6 +156,10 @@ await t('画像を保存ボタンでダウンロードされる（PC）', async 
   const [dl] = await Promise.all([p.waitForEvent('download', { timeout: 5000 }), p.click('#bSave')])
   expect(dl.suggestedFilename() === 'sneeze-quiet.png', dl.suggestedFilename()); return dl.suggestedFilename()
 })
+await t('Xでポスト: 押すと結果入りの x.com/intent/post が新しいタブで開く', async () => {
+  const w = await p.evaluate(() => { const r = hs.S.result; return [r.pct + '%', r.rank.t.ja, r.db.toFixed(1) + 'dB'] })
+  const r = await xCheck(p, 'hs', w, '#くしゃみ我慢選手権', 'https://tom3games.github.io/sneeze-quiet/'); expect(r.label === 'Xでポスト', r.label); return r
+})
 await t('同じ種と同じ操作なら同じ結果（再現性）', async () => {
   const a = await p.evaluate(b => { hs.dbg.seed(42); hs.start(); return JSON.stringify(eval('(' + b + ')')('perfect').rec) }, BOT.toString())
   const b = await p.evaluate(b => { hs.dbg.seed(42); hs.start(); return JSON.stringify(eval('(' + b + ')')('perfect').rec) }, BOT.toString())
@@ -215,6 +243,11 @@ await t('英語に切り替えると全部の文言が英語になる', async ()
   await p.evaluate(() => hs.setLang('ja'))
   expect(/SNEEZE/.test(r.title) && r.start === 'Enter' && r.intro === 'Library' && r.rank && !r.ja, JSON.stringify(r)); return r
 })
+await t('英語: Post on X も英語の結果とハッシュタグで開く', async () => {
+  await p.evaluate(() => { hs.setLang('en'); hs.toResult(); hs.finishReveal() })
+  const w = await p.evaluate(() => { const r = hs.S.result; return [r.pct + '%', r.rank.t.en, r.db.toFixed(1) + 'dB'] })
+  const r = await xCheck(p, 'hs', w, '#HoldThatSneeze', 'https://tom3games.github.io/sneeze-quiet/'); await p.evaluate(() => hs.setLang('ja')); expect(r.label === 'Post on X', r.label); return r
+})
 await t('音: 鳴らしてもエラーが出ず、出来事の音とくしゃみの声が鳴る', async () => {
   await p.evaluate(() => hs.toTitle()); await p.click('#bStart'); await p.click('#bGo')
   const r = await p.evaluate(() => { hs.dbg.pause(); hs.dbg.step(150); hs.press(); hs.dbg.toPeak(0, 0.15); hs.S.downAt = -1e9; hs.release(); hs.dbg.step(40); return { state: hs.Snd.ctx && hs.Snd.ctx.state, played: Object.keys(hs.Snd.played) } })
@@ -233,8 +266,10 @@ await t('通しの最後までコンソールエラーなし', async () => { exp
 await p.close()
 
 // ---- 6サイズ × 全画面で一画面に収まる
-for (const [w, h, name] of SIZES) {
+for (const [w, h, name0, en] of [...SIZES, [360, 640, 'small', 1], [667, 375, 'land-se', 1]]) {
+  const name = name0 + (en ? '-en' : '')
   const q = await open(browser, { viewport: { width: w, height: h } })
+  if (en) await q.evaluate(() => hs.setLang('en'))
   const views = {}
   await q.waitForTimeout(300)
   views.title = await fit(q); await q.screenshot({ path: `${ROOT}/shots/fit-${name}-title.png` })
@@ -245,6 +280,7 @@ for (const [w, h, name] of SIZES) {
   await q.evaluate(() => { hs.dbg.toPeak(0, 0.12); hs.S.downAt = -1e9; hs.release(); hs.dbg.step(16); hs.dbg.render() }); views.sneeze = await fit(q); await q.screenshot({ path: `${ROOT}/shots/fit-${name}-sneeze.png` })
   await q.evaluate(() => { while (hs.S.mode === 'play') hs.dbg.step(1); hs.dbg.step(10); hs.dbg.render() }); views.stageEnd = await fit(q); await q.screenshot({ path: `${ROOT}/shots/fit-${name}-stageend.png` })
   await q.evaluate(() => { hs.toResult(); hs.finishReveal(); hs.dbg.step(30); hs.dbg.render() }); await q.waitForTimeout(450); views.result = await fit(q); await q.screenshot({ path: `${ROOT}/shots/fit-${name}-result.png` })
+  const ol = await oneLine(q); await t(`${name}: 保存・Xボタンの文字が1行`, async () => { expect(!ol.length, ol.join(',')) })
   for (const [v, r] of Object.entries(views)) await t(`一画面に収まる ${name} ${w}x${h} ${v}`, async () => { expect(!r.over.length, JSON.stringify(r)) })
   await t(`${name}: はみ出し・エラーなし`, async () => { const o = await overflow(q); expect(o.sw <= o.W && !o.bad.length && !q.errs.length, JSON.stringify(o) + q.errs.join('|')) })
   await t(`${name}: もう一回ですぐ遊べる`, async () => { await q.click('#bAgain'); const m = await q.evaluate(() => hs.S.mode); expect(m === 'intro', m); return m })

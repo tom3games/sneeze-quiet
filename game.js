@@ -1037,6 +1037,12 @@ function drawCard() {
 function loadFonts(text) { if (!document.fonts || !document.fonts.load) return Promise.resolve(); return Promise.all(['"Dela Gothic One"', '900 10px "Zen Maru Gothic"'].map(f => document.fonts.load((f.includes('10px') ? f : '40px ' + f), text).catch(() => {}))) }
 function cardText() { const T = TT(), r = S.result, L = S.lang; return [T.cardTitle, T.ninja, r.rank.t[L], r.rank.st[L], T.maxDb, r.cmp.t[L], T.reach, T.stCol.join(''), T.cardFoot, 'ハックション!!ACHOO0123456789.%dBkm HOLD THAT SNEEZE CERTIFICATE'].join('') }
 async function cardURL() { await loadFonts(cardText()); return drawCard().toDataURL('image/png') }
+const PUBLIC_URL = 'https://tom3games.github.io/sneeze-quiet/'
+function xPost() {
+  const r = S.result, T = TT(), text = T.share.replace('{P}', r.pct).replace('{R}', r.rank.t[S.lang]).replace('{D}', r.db.toFixed(1))
+  return { text, url: PUBLIC_URL, href: `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(PUBLIC_URL)}` }
+}
+function openX() { if (!S.result) return; Snd.sfx('tap'); window.open(xPost().href, '_blank', 'noopener') }
 async function saveCard() {
   Snd.sfx('tap'); await loadFonts(cardText())
   const c = drawCard(), blob = await new Promise(r => c.toBlob(r, 'image/png'))
@@ -1236,6 +1242,7 @@ $('#bHowBack').onclick = () => { Snd.sfx('tap'); S.mode = 'title'; show('vTitle'
 $('#bGo').onclick = () => beginCount()
 $('#bAgain').onclick = () => { Snd.sfx('tap'); startRun() }
 $('#bSave').onclick = () => saveCard()
+$('#bX').onclick = () => openX()
 $('#bTitle').onclick = () => toTitle()
 $('#vResult').addEventListener('pointerdown', e => { if (!e.target.closest('button')) finishReveal() })
 $('#bLang').onclick = () => { S.lang = S.lang === 'ja' ? 'en' : 'ja'; store.set('hs.lang', S.lang); applyLang(); Snd.sfx('tap') }
@@ -1256,7 +1263,7 @@ loadFonts('!?お静かに静試験中私語厳禁QUIET PLEASE Silence EXAM IN PR
 
 window.hs = {
   S, D, Snd, STG, P, camera, renderer,
-  start: startRun, startStage, beginCount, press, release, toResult, finishReveal, toTitle, drawCard,
+  start: startRun, startStage, beginCount, press, release, toResult, finishReveal, toTitle, drawCard, xPost, openX,
   level: () => S.level, mask: maskOf,
   cardDataURL: cardURL,
   setLang(l) { S.lang = l; applyLang() },
