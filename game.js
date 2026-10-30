@@ -3,7 +3,7 @@ import * as THREE from 'three'
 
 const D = window.HS
 const $ = s => document.querySelector(s)
-const STEP = 1 / 60, TAIL = 0.75, PRE = 0.22, TH = 0.25
+const STEP = 1 / 60, TAIL = 0.5, PRE = 0.22, TH = 0.25
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 const lerp = (a, b, k) => a + (b - a) * k
 const ease = k => { k = clamp(k, 0, 1); return k * k * (3 - 2 * k) }
@@ -153,9 +153,10 @@ const Snd = {
     }
     this.noise(t + 1.0, 0.16, 0.07 * v, 2600, 'bandpass', null, 2)
   },
-  event(type, w, p) {
+  event(type, w, p, fake) {
     if (!this.ctx) return; const t = this.now() + 0.01; this.mark('ev:' + type)
     const R = Math.random
+    if (fake) { this.mark('fake:' + type); return this.fakeEvent(type, t, w) }
     switch (type) {
       case 'train':
         this.swell(t, w, p, TAIL + 0.3, 0.75, 180, 900, 'lowpass', 0.8)
@@ -212,6 +213,16 @@ const Snd = {
         for (let k = 0; k < 90; k++) this.noise(s + 0.2 + R() * (p + 0.4), 0.03, 0.1, 1500 + R() * 2000, 'bandpass', null, 0.8)
         break
       }
+    }
+  },
+  // 予告だけして来ない音
+  fakeEvent(type, t, w) {
+    switch (type) {
+      case 'thunder': this.swell(t, w, 0.01, 0.5, 0.14, 90, 160, 'lowpass', 0.7); break
+      case 'siren': for (let k = 0; t + k * 0.5 < t + w + 0.8; k++) { const rel = k * 0.5, L = rel < w ? 0.1 + 0.35 * (rel / w) ** 2 : 0.3 * (1 - (rel - w) / 0.8); this.tone((k % 2 ? 770 : 960) * (rel < w ? 1.03 : 0.9), t + rel, 0.48, 'square', 0.01 + 0.1 * Math.max(0, L)) } break
+      case 'phone': case 'proctor': { const n = Math.floor(w / 0.42); for (let k = 0; k < n; k++) this.tone(110, t + k * 0.42, 0.24, 'square', 0.015 + 0.05 * k / n); this.tone(this.mtof(type === 'phone' ? 84 : 79), t + w, 0.09, 'square', 0.1); break }
+      case 'cheer': this.swell(t, w, 0.01, 0.4, 0.14, 400, 700, 'bandpass', 0.6); break
+      case 'train': this.swell(t, w, 0.01, 0.6, 0.3, 180, 500, 'lowpass', 0.8); this.tone(900, t + w, 0.5, 'sawtooth', 0.04, null, 700); break
     }
   },
   sfx(name, v = 1) {
@@ -410,7 +421,7 @@ function room(grp, floorTex, wallCol, ceilCol) {
 
 // ---------- 3つの会場
 const STG = {}
-function evOf(type) { return S.evs.find(e => e.type === type && e.ph !== 'idle' && e.ph !== 'done') }
+function evOf(type) { return S.evs.find(e => e.type === type && e.ph !== 'idle' && e.ph !== 'done' && e.ph !== 'fizzle') }
 const stageDefs = {
   library() {
     const grp = new THREE.Group(), npcs = []
@@ -644,17 +655,32 @@ function doSpray(n) {
 }
 
 // ---------- 予定（ステージの音）
+// 本物の音は間隔を揺らす（後のステージほど不規則）。ひっかけ（予告だけで来ない音）は本物の間に置く
 function buildEvents(stg) {
-  return stg.events.map(e => {
-    const at = e.at + (S.rand() - 0.5) * 0.8
-    return { type: e.type, at, warn: stg.warn, peak: stg.peak, ws: at - stg.warn, started: false, peaked: false, ph: 'idle', k: 0, lvl: 0 }
-  })
+  const real = [], out = []
+  let prev = -99
+  for (const e of stg.events.filter(e => !e.fake)) {
+    let at = e.at + (S.rand() - 0.5) * 2 * stg.jit
+    at = clamp(at, Math.max(stg.warn + 0.6, prev + stg.gMin), prev < 0 ? 99 : prev + stg.gMax); at = Math.min(at, D.STAGE_LEN - stg.peak - 1.2)
+    real.push(at); prev = at
+    out.push({ type: e.type, at, warn: stg.warn, peak: stg.peak, ws: at - stg.warn, fake: false })
+  }
+  for (const e of stg.events.filter(e => e.fake)) {
+    const a = real[e.after], b = real[e.after + 1], w = stg.warn * 0.8
+    const at = a + stg.peak + TAIL + w + (b - stg.warn - (a + stg.peak + TAIL + w)) * (0.2 + S.rand() * 0.5)
+    out.push({ type: e.type, at, warn: w, peak: 0, ws: at - w, fake: true })
+  }
+  out.sort((x, y) => x.at - y.at)
+  for (const e of out) Object.assign(e, { started: false, peaked: false, ph: 'idle', k: 0, lvl: 0 })
+  return out
 }
 function evLevel(e, st) {
   if (st < e.ws) { e.ph = 'idle'; e.k = 0; return 0 }
   if (st < e.at) { e.ph = 'warn'; e.k = (st - e.ws) / e.warn; return 0.08 + 0.42 * e.k * e.k }
-  if (st < e.at + e.peak) { e.ph = 'peak'; e.k = (st - e.at) / e.peak; return 1 }
-  if (st < e.at + e.peak + TAIL) { e.ph = 'tail'; e.k = (st - e.at - e.peak) / TAIL; return 1 - e.k }
+  if (e.fake) { if (st < e.at + 0.4) { e.ph = 'fizzle'; e.k = (st - e.at) / 0.4; return 0.5 * (1 - e.k) } e.ph = 'done'; e.k = 1; return 0 }
+  // 山はまん中だけが一番うるさい（端はかき消しきれない）
+  if (st < e.at + e.peak) { e.ph = 'peak'; e.k = (st - e.at) / e.peak; return 1 - 0.45 * Math.pow(Math.abs(2 * e.k - 1), 1.3) }
+  if (st < e.at + e.peak + TAIL) { e.ph = 'tail'; e.k = (st - e.at - e.peak) / TAIL; return 0.55 * (1 - e.k) }
   e.ph = 'done'; e.k = 1; return 0
 }
 const maskOf = L => clamp((L - 0.35) / 0.55, 0, 1)
@@ -690,7 +716,7 @@ function applyLang() {
   $('#langTxt').textContent = S.lang === 'ja' ? 'EN' : 'JP'
   const H = isTouch ? T.holdSP : T.holdPC, R = isTouch ? T.relSP : T.relPC
   $('#howSteps').innerHTML = T.howSteps.map(([ic, s]) => `<div class="step">${svg(ic)}<span>${s.replace('{HOLD}', H).replace('{REL}', R)}</span></div>`).join('')
-  const evs = []; for (const st of D.stages) for (const e of st.events) evs.push(D.ev[e.type][S.lang])
+  const evs = []; for (const st of D.stages) for (const e of st.events.filter(e => !e.fake)) evs.push(D.ev[e.type][S.lang])
   $('#evList').innerHTML = evs.map(s => `<span>${s}</span>`).join('')
   $('#gItch .mark').dataset.l = S.lang === 'ja' ? 'ハ…' : 'Ah...'
   $('#holdLab').textContent = S.holding ? T.holdOn : T.holdOff
@@ -865,8 +891,8 @@ function updateGame(dt) {
     let L = 0
     for (const e of S.evs) {
       L = Math.max(L, evLevel(e, S.st))
-      if (!e.started && S.st >= e.ws) { e.started = true; Snd.event(e.type, Math.max(0.05, e.at - S.st), e.peak) }
-      if (!e.peaked && S.st >= e.at) { e.peaked = true; onPeak(e) }
+      if (!e.started && S.st >= e.ws) { e.started = true; Snd.event(e.type, Math.max(0.05, e.at - S.st), e.peak, e.fake) }
+      if (!e.peaked && S.st >= e.at) { e.peaked = true; if (e.fake) onFizzle(e); else onPeak(e) }
     }
     S.level = L
     if (S.st < D.STAGE_LEN) {
@@ -910,6 +936,10 @@ function onPeak(e) {
   fx(lab, 'ono yel', { x: clamp(s.x, innerWidth * 0.2, innerWidth * 0.8), y: clamp(s.y, innerHeight * 0.32, innerHeight * 0.44), size: vmin() * 0.085, life: e.peak + 0.5, rot: (S.rand() - 0.5) * 16, shake: 3 })
   S.shake = Math.max(S.shake, 0.025); void T
 }
+function onFizzle(e) {
+  const s = toScreen(cur.lookAt(e.type))
+  fx(S.lang === 'ja' ? '…あれ？' : '...huh?', 'ono small', { x: clamp(s.x, innerWidth * 0.2, innerWidth * 0.8), y: clamp(s.y, innerHeight * 0.32, innerHeight * 0.44), size: vmin() * 0.055, life: 1.1, rot: 5 })
+}
 let ambT = 0
 function ambient(dt) {
   ambT -= dt; if (ambT > 0) return
@@ -924,7 +954,7 @@ function toResult() {
   S.mode = 'result'; S.resT = 0; S.revealStep = 0; clearFx(); S.later = []
   let sumM = 0, den = 0; const per = []
   for (let i = 0; i < 3; i++) {
-    const rs = S.rec.filter(r => r.stage === i), ev = D.stages[i].events.length, m = rs.reduce((a, r) => a + r.m, 0)
+    const rs = S.rec.filter(r => r.stage === i), ev = D.stages[i].events.filter(e => !e.fake).length, m = rs.reduce((a, r) => a + r.m, 0)
     sumM += m; den += Math.max(rs.length, ev)
     per.push({ safe: rs.filter(r => r.m >= 0.5).length, n: rs.length, ev, pct: Math.round(100 * m / Math.max(rs.length, ev)) })
   }

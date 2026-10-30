@@ -3,12 +3,12 @@ window.HS = {
   STAGE_LEN: 18,
   // ゲージの速さ（1秒あたり）。fast=離している時のムズムズ、slow=我慢中のムズムズ、strainUp=我慢中の限界、strainDown=離している時の回復
   stages: [
-    { id: 'library', warn: 2.6, peak: 1.3, fast: 1 / 2.6, slow: 1 / 14, strainUp: 1 / 7.5, strainDown: 1 / 2, start: 0.15,
+    { id: 'library', warn: 2.4, peak: 0.8, fast: 1 / 2.2, slow: 1 / 12, strainUp: 1 / 7.2, strainDown: 1 / 2, start: 0.15, jit: 0.4, gMin: 4.6, gMax: 6.4,
       events: [{ type: 'train', at: 4.6 }, { type: 'phone', at: 10.2 }, { type: 'applause', at: 15.3 }] },
-    { id: 'temple', warn: 2.3, peak: 1.15, fast: 1 / 2.4, slow: 1 / 13, strainUp: 1 / 7.2, strainDown: 1 / 2, start: 0.18,
-      events: [{ type: 'gong', at: 4.3 }, { type: 'thunder', at: 9.7 }, { type: 'siren', at: 14.8 }] },
-    { id: 'exam', warn: 2.0, peak: 1.0, fast: 1 / 2.2, slow: 1 / 12, strainUp: 1 / 6.8, strainDown: 1 / 2, start: 0.2,
-      events: [{ type: 'plane', at: 3.9 }, { type: 'proctor', at: 9.0 }, { type: 'cheer', at: 14.1 }] },
+    { id: 'temple', warn: 2.1, peak: 0.65, fast: 1 / 2.0, slow: 1 / 11, strainUp: 1 / 6.6, strainDown: 1 / 2, start: 0.18, jit: 0.8, gMin: 4.2, gMax: 6.1,
+      events: [{ type: 'gong', at: 4.0 }, { type: 'thunder', at: 9.8 }, { type: 'siren', at: 14.8 }, { type: 'thunder', fake: true, after: 0 }] },
+    { id: 'exam', warn: 1.8, peak: 0.5, fast: 1 / 1.8, slow: 1 / 10, strainUp: 1 / 6.2, strainDown: 1 / 2, start: 0.2, jit: 1.1, gMin: 4.0, gMax: 5.9,
+      events: [{ type: 'plane', at: 3.6 }, { type: 'proctor', at: 9.0 }, { type: 'cheer', at: 14.2 }, { type: 'proctor', fake: true, after: 0 }, { type: 'cheer', fake: true, after: 1 }] },
   ],
   // 1回ごとの判定。mask = かき消し度 0..1
   rateOf(m) { return m >= 0.9 ? 'perfect' : m >= 0.5 ? 'safe' : m > 0.12 ? 'sus' : 'busted' },
@@ -58,8 +58,8 @@ window.HS = {
       howSteps: [
         ['hold', 'ムズムズは勝手にたまる。<b>{HOLD}</b>あいだ「我慢」で、たまり方が遅くなる'],
         ['red', '我慢しすぎると顔が真っ赤に。限界で<b>暴発</b>する'],
-        ['ear', '窓の外の光・近づく音は<b>大きな音の予告</b>'],
-        ['go', 'いちばんうるさい瞬間に<b>{REL}</b>と「ハックション！」。音にかぶるほど高得点'],
+        ['ear', '窓の外の光・近づく音は<b>大きな音の予告</b>。でも<b>来ないひっかけ</b>もある'],
+        ['go', '音の山の<b>まん中</b>に重なるよう<b>{REL}</b>と「ハックション！」。山は一瞬、端だとバレかける'],
       ],
       holdPC: 'スペースかクリックを押している', holdSP: '画面を長押ししている',
       relPC: '離す', relSP: '指を離す',
@@ -104,8 +104,8 @@ window.HS = {
       howSteps: [
         ['hold', 'The itch builds on its own. <b>{HOLD}</b> to hold it in and slow it down'],
         ['red', 'Hold too long and your face turns red, then it <b>bursts out</b>'],
-        ['ear', 'Lights outside and rising sounds <b>warn you of a loud noise</b>'],
-        ['go', '<b>{REL}</b> at the loudest moment: ACHOO! The better you hide it, the higher the score'],
+        ['ear', 'Lights outside and rising sounds <b>warn you of a loud noise</b>. Some are <b>fakes that never come</b>'],
+        ['go', '<b>{REL}</b> so the ACHOO lands in the <b>middle</b> of the noise. The peak is short; the edges are risky'],
       ],
       holdPC: 'Hold Space or click', holdSP: 'Press and hold the screen',
       relPC: 'Let go', relSP: 'Lift your finger',

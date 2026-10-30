@@ -48,16 +48,18 @@ const fit = q => q.evaluate(() => {
 })
 const SIZES = [[360, 640, 'small'], [390, 844, 'phone'], [844, 390, 'land'], [667, 375, 'land-se'], [768, 1024, 'tab'], [1440, 900, 'pc']]
 
-// ページの中で動かすボット。mode: perfect=山で離す / never=何もしない / hold=押しっぱなし / early=予告の途中で離す
-const BOT = mode => {
+// ページの中で動かすボット。mode: perfect=上手い人（山のまん中を狙うが0.09秒ぶれる・ひっかけに3割かかる） / never=何もしない / hold=押しっぱなし / early=予告の途中で離す
+const BOT = (mode, bseed = 1) => {
   hs.dbg.pause(); const S = hs.S; let guard = 0
+  let a = bseed >>> 0; const R = () => { a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 }
+  const gauss = () => Math.sqrt(-2 * Math.log(R() + 1e-9)) * Math.cos(2 * Math.PI * R())
   while (S.mode !== 'result' && guard++ < 60 * 150) {
     if (S.mode === 'intro') hs.beginCount()
     if (S.mode === 'count' && mode !== 'never' && !S.holding) hs.press()
     if (S.mode === 'play') {
       if (mode === 'perfect' || mode === 'early') {
-        const off = mode === 'perfect' ? 0.1 : -0.9
-        const e = S.evs.find(e => !e.botDone && S.st >= e.at + off && S.st < e.at + off + 0.3)
+        for (const e of S.evs) if (e.off === undefined) e.off = mode === 'early' ? -0.9 : (e.fake && R() > 0.3) ? 99 : e.peak / 2 - 0.22 + gauss() * 0.09
+        const e = S.evs.find(e => !e.botDone && S.st >= e.at + e.off && S.st < e.at + e.off + 0.3)
         if (e && S.holding && S.gauge >= 0.25) { e.botDone = true; S.downAt = -1e9; hs.release() }
         else if (!S.holding && (!S.snz || S.snz.impact)) hs.press()
       } else if (mode === 'hold') { if (!S.holding) hs.press() }
@@ -104,7 +106,7 @@ let perfect
 await t('通しで遊べる: 山で離すと全部セーフで忍者度が高い', async () => {
   perfect = await p.evaluate(b => { hs.dbg.pause(); hs.dbg.seed(2); hs.start(); return eval('(' + b + ')')('perfect') }, BOT.toString())
   const bad = perfect.rec.filter(r => r.m < 0.5)
-  expect(perfect.pct >= 90 && !bad.length && perfect.rec.length === 9, JSON.stringify({ pct: perfect.pct, bad, n: perfect.rec.length })); return { pct: perfect.pct, rank: perfect.rank, db: perfect.db, n: perfect.rec.length }
+  expect(perfect.pct >= 75 && bad.length <= 3 && perfect.rec.length >= 9, JSON.stringify({ pct: perfect.pct, bad, n: perfect.rec.length })); return { pct: perfect.pct, rank: perfect.rank, db: perfect.db, n: perfect.rec.length }
 })
 await t('結果画面: 最後まで発表するとボタンが押せる位置に出る', async () => {
   const r = await p.evaluate(() => { hs.finishReveal(); return { pct: document.querySelector('#rPct').textContent, stamp: document.querySelector('#rStamp').classList.contains('on'), btn: getComputedStyle(document.querySelector('#rBtns1')).opacity, rank: document.querySelector('#rRank').textContent } })
@@ -133,7 +135,17 @@ await t('画像を保存ボタンでダウンロードされる（PC）', async 
 await t('同じ種と同じ操作なら同じ結果（再現性）', async () => {
   const a = await p.evaluate(b => { hs.dbg.seed(42); hs.start(); return JSON.stringify(eval('(' + b + ')')('perfect').rec) }, BOT.toString())
   const b = await p.evaluate(b => { hs.dbg.seed(42); hs.start(); return JSON.stringify(eval('(' + b + ')')('perfect').rec) }, BOT.toString())
-  expect(a === b && JSON.parse(a).length === 9, a.slice(0, 80) + ' vs ' + b.slice(0, 80)); return { n: JSON.parse(a).length }
+  expect(a === b && JSON.parse(a).length >= 9, a.slice(0, 80) + ' vs ' + b.slice(0, 80)); return { n: JSON.parse(a).length }
+})
+await t('難しさの分布: 上手いボット40回は90%台中心・100%はたまに／何もしない・押しっぱなしは低い', async () => {
+  const r = await p.evaluate(b => {
+    const bot = eval('(' + b + ')'), run = (m, n, base) => { const o = []; for (let i = 0; i < n; i++) { hs.dbg.seed(base + i * 7); hs.start(); o.push(bot(m, base * 31 + i).pct) } return o.sort((x, y) => x - y) }
+    const sk = run('perfect', 40, 100), nv = run('never', 10, 300), hd = run('hold', 10, 500)
+    const st = a => ({ min: a[0], med: a[a.length >> 1], mean: Math.round(a.reduce((x, y) => x + y, 0) / a.length), max: a[a.length - 1] })
+    return { skilled: { ...st(sk), n100: sk.filter(x => x === 100).length, n90s: sk.filter(x => x >= 90 && x < 100).length, n80s: sk.filter(x => x >= 80 && x < 90).length, below80: sk.filter(x => x < 80).length }, never: st(nv), hold: st(hd) }
+  }, BOT.toString())
+  const k = r.skilled
+  expect(k.med >= 88 && k.med <= 98 && k.n100 >= 1 && k.n100 <= 12 && r.never.max < 40 && r.hold.max < 40, JSON.stringify(r)); return r
 })
 await t('何もしないと、音のない所で勝手に出て低い評価になる', async () => {
   const r = await p.evaluate(b => { hs.dbg.seed(5); hs.start(); return eval('(' + b + ')')('never') }, BOT.toString())
@@ -262,7 +274,7 @@ await t('WebKit: 画面を押すと我慢、離すと解除（タッチ）', asy
 await t('WebKit: 結果まで通してエラーなし', async () => {
   const r = await wp.evaluate(b => { hs.dbg.seed(8); hs.start(); return eval('(' + b + ')')('perfect').pct }, BOT.toString())
   await wp.evaluate(() => { hs.finishReveal(); hs.dbg.render() }); await wp.waitForTimeout(400); await wp.screenshot({ path: ROOT + '/shots/webkit-result.png' })
-  expect(r >= 90 && wp.errs.length === 0, r + ' ' + wp.errs.join('|')); return { pct: r }
+  expect(r >= 75 && wp.errs.length === 0, r + ' ' + wp.errs.join('|')); return { pct: r }
 })
 await wb.close()
 
