@@ -9,7 +9,7 @@ for (const [name, bt, opts] of [['chromium', chromium, {}], ['webkit', webkit, {
   p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error') errs.push(m.text()) })
   p.on('requestfailed', r => errs.push('fail ' + r.url()))
   await p.goto(URL0 + '?t=' + Date.now(), { waitUntil: 'networkidle' })
-  await p.waitForFunction(() => window.hsReady, null, { timeout: 15000 })
+  await p.waitForFunction(() => window.__hsReady, null, { timeout: 15000 })
   // 遊びの通し（タイトル → 遊ぶ → くしゃみ → 結果）
   if (opts.hasTouch) await p.tap('#bStart'); else await p.click('#bStart')
   if (opts.hasTouch) await p.tap('#bGo'); else await p.click('#bGo')
