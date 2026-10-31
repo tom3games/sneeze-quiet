@@ -25,7 +25,7 @@ window.HS = {
     coworker: { ja: '同僚', en: 'Coworker', sniff: 1, blame: 0.7,
       board: [['…月曜って、なんで毎週来るんだろ', 'Why does Monday keep happening?'], ['（エナジードリンク3本目）', '(third energy drink of the morning)'], ['おはよ…昨日の飲み会の記憶ない', 'Morning... I remember nothing from last night.']],
       exit: [['じゃ、地獄の会議行ってくる', 'Off to the meeting from hell.'], ['（ため息とともに降りていく）', '(exits on a sigh)']],
-      notice: [['…この箱、何か発酵してない？', '...Is something fermenting in here?'], ['え、会議室の匂いがする', 'Smells like the break room fridge.']],
+      notice: [['…この箱、何か発酵してない？', '...Is something fermenting in here?'], ['…給湯室の冷蔵庫の匂いする', 'Smells like the break room fridge.']],
       blamed: [['え、オレ！？', 'Wait, ME!?'], ['ちが…オレ今日ヨーグルトしか…', 'No! I only had yogurt today!']] },
     bucho: { ja: '部長', en: 'The manager', sniff: 1, blame: 0.3,
       board: [['…君、今期の評価の話をしようか', '...Let\'s talk about your performance review.'], ['（無言でネクタイを締め直す）', '(silently tightens his tie)'], ['いい朝だ。数字以外はな', 'Lovely morning. Except for the numbers.']],
