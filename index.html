@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>密室おなら選手権 | ELEVATOR FART</title>
-<meta name="description" content="逃げ場のないエレベーターで、バレずに何発出せるか。おならはチャイムや揺れの音にかぶせて出せ。匂いでもバレる。乗ってくる人は毎回ちがう。咳払い・なすりつけで誤魔化せ。ブラウザで遊べる3Dバカゲー。">
+<title>くしゃみ我慢選手権 | HOLD THAT SNEEZE</title>
+<meta name="description" content="図書館・法事・試験会場。静かすぎる場所で、くしゃみは電車や雷の音にかぶせて出せ。特大くしゃみほど高得点、外せば全員が振り向く。ブラウザで遊べる3Dバカゲー。">
 <meta name="theme-color" content="#2a2233">
 <meta property="og:type" content="website">
-<meta property="og:title" content="密室おなら選手権 | ELEVATOR FART">
-<meta property="og:description" content="エレベーターで、バレずに何発出せるか。音にかぶせて小出しに。匂いでもバレる。">
-<meta property="og:image" content="https://tom3games.github.io/sneeze-quiet/og.png?v=2">
+<meta property="og:title" content="くしゃみ我慢選手権 | HOLD THAT SNEEZE">
+<meta property="og:description" content="くしゃみは大きな音にかぶせて出せ。特大ほど高得点、外せば全員が振り向く。">
+<meta property="og:image" content="https://tom3games.github.io/sneeze-quiet/og.png?v=7">
 <meta property="og:url" content="https://tom3games.github.io/sneeze-quiet/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="密室おなら選手権 | ELEVATOR FART">
-<meta name="twitter:description" content="エレベーターで、バレずに何発出せるか。匂いでもバレる。">
-<meta name="twitter:image" content="https://tom3games.github.io/sneeze-quiet/og.png?v=2">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='4' width='52' height='56' rx='6' fill='%23b6bcc8' stroke='%231b1620' stroke-width='4'/%3E%3Cpath d='M32 8v52' stroke='%231b1620' stroke-width='3'/%3E%3Ccircle cx='22' cy='44' r='9' fill='%23b9d27a' stroke='%231b1620' stroke-width='3'/%3E%3Ccircle cx='38' cy='36' r='11' fill='%23b9d27a' stroke='%231b1620' stroke-width='3'/%3E%3C/svg%3E">
+<meta name="twitter:title" content="くしゃみ我慢選手権 | HOLD THAT SNEEZE">
+<meta name="twitter:description" content="くしゃみは大きな音にかぶせて出せ。特大ほど高得点、外せば全員が振り向く。">
+<meta name="twitter:image" content="https://tom3games.github.io/sneeze-quiet/og.png?v=7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23ffcf9e'/%3E%3Ccircle cx='32' cy='36' r='9' fill='%23ff6b5b'/%3E%3Cpath d='M16 24l8 4-8 4M48 24l-8 4 8 4' stroke='%23222' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='32' cy='50' rx='8' ry='5' fill='%23222'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
@@ -55,14 +55,12 @@ button{font-family:inherit;color:inherit;font-size:inherit;-webkit-user-select:n
 /* タイトル */
 #vTitle{justify-content:space-between;gap:10px}
 .logo{text-align:center;line-height:1;position:relative;width:min(560px,100%)}
-.logo::before{content:'';position:absolute;inset:-18% -12%;z-index:-1;background:radial-gradient(closest-side,rgba(27,22,32,.88),rgba(27,22,32,0));pointer-events:none}
+.logo::before{content:'';position:absolute;inset:-18% -12%;z-index:-1;background:radial-gradient(closest-side,rgba(27,22,32,.62),rgba(27,22,32,0));pointer-events:none}
 .logo{z-index:0}
 .logo .en{display:inline-block;font-family:var(--disp);font-size:clamp(13px,3.6vw,18px);letter-spacing:.12em;color:var(--ink);background:var(--yel);padding:5px 12px 4px;border:3px solid var(--ink);transform:rotate(-3deg);box-shadow:3px 3px 0 var(--ink)}
 .logo .main{display:block;margin-top:10px;font-family:var(--disp);font-size:min(12.5vw,7.4vh,72px);color:#fff;letter-spacing:.01em;
-  -webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink),0 0 26px rgba(255,61,46,.45)}
+  -webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink),0 0 26px rgba(255,61,46,.45)}
 .logo .main b{color:var(--red);font-weight:400;display:inline-block;animation:shiver .18s steps(2) infinite}
-html[lang=ja] .logo .main{font-family:"Zen Maru Gothic",var(--disp);font-weight:900;letter-spacing:.04em}
-html[lang=ja] .logo .main b{font-family:var(--disp)}
 @keyframes shiver{0%{transform:translate(0,0) rotate(-1deg)}50%{transform:translate(1px,-1px) rotate(1deg)}}
 .tBottom{width:min(520px,100%);display:flex;flex-direction:column;gap:10px}
 .mc{display:flex;gap:10px;align-items:flex-start;width:100%}
@@ -79,71 +77,58 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
 .step{display:flex;gap:10px;align-items:center;font-weight:700;font-size:14px;line-height:1.45}
 .step svg{flex:none;width:44px;height:44px;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:4px;stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .step b{color:var(--red-dk)}
-.evList{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;justify-content:center}
-.evList span{font-size:12px;font-weight:900;background:var(--ink);color:var(--paper);padding:3px 9px;border-radius:99px}
+.kindList{display:flex;gap:6px;margin-top:10px;justify-content:center}
+.kindList span{flex:1;min-width:0;text-align:center;font-family:var(--disp);font-size:14px;border:2px solid var(--ink);border-radius:12px;padding:4px 2px;background:#fff;white-space:nowrap}
+.kindList span b{display:block;font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:12px;color:var(--red-dk)}
+.kindList .k1{background:var(--yel)}.kindList .k2{background:var(--red);color:#fff}.kindList .k2 b{color:#fff}
 #vHow .btn{width:min(560px,100%)}
 
-/* プレイ */
-#vPlay{padding:0;z-index:10;touch-action:none;cursor:pointer}
-.hudTop{position:absolute;left:0;right:0;top:0;padding:max(8px,env(safe-area-inset-top)) 112px 0 max(10px,env(safe-area-inset-left));display:flex;gap:8px;align-items:flex-start;pointer-events:none}
-.stChip{flex:none;display:flex;flex-direction:column;align-items:center;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:3px 8px;box-shadow:0 3px 0 var(--ink);min-width:62px}
-.stChip small{font-size:10px;font-weight:900;line-height:1.1}
-.stChip b{font-family:var(--disp);font-weight:400;font-size:20px;line-height:1.05}
-.noise{flex:1;min-width:0;max-width:360px;background:rgba(27,22,32,.78);border:2px solid rgba(255,248,236,.45);border-radius:12px;padding:4px 8px 6px}
-.noise .lab{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:11px;font-weight:900;min-height:22px}
-.noise .lab>span:first-child{flex:none;white-space:nowrap}
-.noise .lab .evi{min-width:0;flex:0 1 auto;display:flex;align-items:center;gap:4px;color:var(--yel);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.noise .lab .evi span{overflow:hidden;text-overflow:ellipsis}
-.noise .lab .evi svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.noise .lab .evi.hot{color:#fff;animation:blink .25s steps(2) infinite}
-@keyframes blink{50%{opacity:.35}}
-.nbar{position:relative;height:14px;border-radius:7px;background:#3b3344;overflow:hidden;margin-top:2px}
-.nbar .zone{position:absolute;top:0;bottom:0;left:60%;right:0;background:repeating-linear-gradient(45deg,rgba(22,163,148,.45) 0 6px,rgba(22,163,148,.25) 6px 12px)}
-.nbar .zone2{position:absolute;top:0;bottom:0;left:88%;right:0;background:rgba(255,210,31,.5)}
-.nbar i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#8d84a0,#fff);border-radius:7px}
-.nbar.mask i{background:linear-gradient(90deg,var(--teal),#7dffe9)}
-.hudBot{position:absolute;left:0;right:0;bottom:0;padding:0 max(12px,env(safe-area-inset-right)) max(12px,calc(env(safe-area-inset-bottom) + 8px)) max(12px,env(safe-area-inset-left));display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
-.botRow{display:flex;align-items:flex-end;gap:12px;justify-content:center;width:100%;max-width:460px}
-.ruses{display:flex;gap:6px;width:100%;max-width:460px;pointer-events:auto}
-.ruse{position:relative;flex:1;min-width:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--yel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;box-shadow:0 4px 0 var(--ink);font-weight:900;font-size:11px;line-height:1.1;cursor:pointer;padding:3px 2px;touch-action:manipulation}
-.ruse:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
-.ruse svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.ruse .rl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.ruse .rn{position:absolute;top:-8px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--red);color:#fff;border:2px solid var(--ink);font-size:11px;line-height:16px;text-align:center;padding:0 3px}
-.ruse:disabled{background:#8d8597;color:#3b3344;box-shadow:0 2px 0 var(--ink);cursor:default}
-.ruse:disabled .rn{background:#5a5262}
-.gauges{flex:1;max-width:330px;display:flex;flex-direction:column;gap:4px;background:rgba(27,22,32,.78);border:2px solid rgba(255,248,236,.45);border-radius:14px;padding:6px 10px}
-.g{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;font-size:11px;font-weight:900;line-height:1.1}
-.g .lab{width:4.4em;white-space:nowrap}
-.gbar{position:relative;height:11px;border-radius:6px;background:#3b3344;overflow:hidden}
-.gbar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:6px}
-#gSmell i{background:linear-gradient(90deg,#d6e89a,#8fb03a)}
-#gSniff i{background:linear-gradient(90deg,#ffb35c,#ff3d2e)}
-#gSniff.danger{animation:blink .2s steps(2) infinite}
-.cov{display:none;align-items:center;gap:4px;margin-top:3px;font-size:11px;font-weight:900;color:#b9f07a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.cov.on{display:flex}
-.cov svg{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.cov span{overflow:hidden;text-overflow:ellipsis}
-#gItch i{background:linear-gradient(90deg,#ffe58a,var(--yel))}
-#gStrain i{background:linear-gradient(90deg,#ff9f8f,var(--red))}
-#gStrain.danger{animation:blink .2s steps(2) infinite}
-.gbar .mark{position:absolute;top:-2px;bottom:-2px;left:25%;width:2px;background:#fff}
-.gbar .mark::after{content:attr(data-l);position:absolute;left:4px;top:0;font-size:9px;color:#fff;line-height:11px;white-space:nowrap}
-#bHold{pointer-events:none;flex:none;width:84px;height:84px;border-radius:50%;border:4px solid var(--ink);background:var(--paper);box-shadow:0 6px 0 var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);font-weight:900;font-size:12px;gap:0;transition:transform .05s,box-shadow .05s,background .1s}
-#bHold svg{width:50px;height:50px}
-#bHold.on{background:var(--red);color:#fff;transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
-.hint{position:absolute;left:50%;bottom:calc(max(12px,env(safe-area-inset-bottom)) + 178px);transform:translateX(-50%);background:var(--yel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:6px 12px;font-weight:900;font-size:14px;white-space:nowrap;pointer-events:none;animation:bob .6s ease-in-out infinite alternate}
+/* プレイ（バー・メーターは置かない） */
+#vPlay{padding:0;z-index:10;touch-action:none}
+.hudTop{position:absolute;left:0;top:0;padding:max(10px,env(safe-area-inset-top)) 0 0 max(10px,env(safe-area-inset-left));pointer-events:none}
+.stat{display:flex;align-items:center;gap:10px;background:rgba(27,22,32,.6);border-radius:14px;padding:5px 12px 5px 8px}
+.lives{display:flex;gap:3px}
+.lives i{display:block;width:24px;height:24px}
+.lives svg{width:100%;height:100%;fill:var(--red);stroke:var(--ink);stroke-width:1.6}
+.lives i.off svg{fill:rgba(255,248,236,.18);stroke:rgba(255,248,236,.35)}
+.lives i.broke{animation:broke .6s ease-out}
+@keyframes broke{0%{transform:scale(1.6) rotate(-12deg)}100%{transform:none}}
+.pts{display:flex;align-items:baseline;gap:2px;font-family:var(--disp);font-size:22px;line-height:1}
+.pts small{font-size:12px;font-family:inherit}
+.place{position:absolute;left:50%;top:max(60px,calc(env(safe-area-inset-top) + 54px));transform:translateX(-50%);font-family:var(--disp);font-size:20px;color:var(--ink);background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:4px 14px;box-shadow:0 4px 0 var(--ink);white-space:nowrap;pointer-events:none}
+.place.go{animation:placeIn 2.6s ease forwards}
+@keyframes placeIn{0%{opacity:0;transform:translate(-50%,-14px)}12%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0}}
+.snzRow{position:absolute;left:50%;transform:translateX(-50%);bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));width:min(500px,calc(100% - 20px));display:flex;gap:10px;align-items:flex-end}
+.snz{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:3px solid var(--ink);border-radius:20px;background:var(--paper);color:var(--ink);box-shadow:0 5px 0 var(--ink);cursor:pointer;overflow:hidden;padding:4px 2px;transition:transform .05s,box-shadow .05s,filter .15s;touch-action:none}
+.snz.k0{height:78px}.snz.k1{height:88px;background:var(--yel)}.snz.k2{flex:1.25;height:100px;background:var(--red);color:#fff}
+.snz .ic{display:block;width:38px;height:30px}.snz.k2 .ic{width:46px;height:36px}
+.snz .ic svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.snz .nm{font-family:var(--disp);font-size:min(15px,4vw);line-height:1.15;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:clip}
+.snz.k2 .nm{font-size:min(16px,4vw);text-shadow:0 2px 0 var(--red-dk)}
+.snz .pt{font-weight:900;font-size:12px;line-height:1.1;opacity:.85}
+.snz kbd{position:absolute;left:6px;top:4px;font:900 11px/1 var(--disp);opacity:.55}
+.touch .snz kbd{display:none}
+/* 溜まり直し: 上から暗い幕が下りていて、溜まるにつれて上がる */
+.snz::after{content:'';position:absolute;left:0;right:0;top:0;height:calc(var(--cd,0) * 100%);background:rgba(27,22,32,.62);pointer-events:none}
+.snz:not(.ready){filter:saturate(.35)}
+.snz.fire{animation:fire .25s ease-out}
+@keyframes fire{0%{transform:translateY(5px) scale(.94);box-shadow:0 0 0 var(--ink)}100%{transform:none}}
+.snz.pop{animation:pop .3s ease-out}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
+.snz.now{animation:nowPulse .45s ease-in-out infinite alternate}
+@keyframes nowPulse{to{transform:translateY(-6px);box-shadow:0 11px 0 var(--ink),0 0 0 6px var(--yel)}}
+.hint{position:absolute;left:50%;bottom:calc(max(12px,env(safe-area-inset-bottom)) + 124px);transform:translateX(-50%);max-width:calc(100% - 24px);background:var(--yel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:6px 12px;font-weight:900;font-size:14px;text-align:center;pointer-events:none;animation:bob .6s ease-in-out infinite alternate}
+.hint[data-k=now]{background:var(--red);color:#fff;font-family:var(--disp);font-weight:400;font-size:20px}
 @keyframes bob{to{transform:translate(-50%,-6px)}}
-.card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,calc(100% - 32px));max-height:calc(100% - 24px);overflow:hidden;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:20px;box-shadow:0 7px 0 var(--ink);padding:14px 16px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;cursor:default}
-.card .no{font-family:var(--disp);font-size:14px;background:var(--ink);color:var(--yel);padding:2px 12px;border-radius:99px}
-.card h3{font-family:var(--disp);font-weight:400;font-size:clamp(28px,8vw,40px);line-height:1.1}
-.card p{font-size:14px;font-weight:700;line-height:1.5}
-.card .ctrl{display:flex;gap:8px;width:100%}
-.card .ctrl div{flex:1;border:2px solid var(--ink);border-radius:12px;padding:6px 4px;font-size:12px;font-weight:900;line-height:1.35;background:#fff;display:flex;flex-direction:column;align-items:center;gap:2px}
-.card .ctrl svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.card .btn{min-height:50px}
-.card .tally{font-family:var(--disp);font-weight:400;font-size:18px;color:var(--red-dk)}
-#count{position:absolute;left:0;right:0;top:38%;text-align:center;font-family:var(--disp);font-size:min(22vw,22vh,150px);color:#fff;-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 6px 0 var(--ink);pointer-events:none}
+#fade{position:fixed;inset:0;z-index:8;background:#140f18;opacity:0;pointer-events:none;transition:opacity .4s}
+#fade.on{opacity:1}
+#quake{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 35%,rgba(255,250,220,.5),rgba(255,250,220,0) 60%)}
+#quake.on{animation:quake .35s ease-out}
+@keyframes quake{0%{opacity:1}100%{opacity:0}}
+.ono.warn{opacity:.9;color:#fff}
+.ono small{display:block;text-align:center;font-size:.55em;color:#fff;margin-top:-.1em}
+.ono.red small{color:#fff}
+.ono.small small{color:var(--yel)}
 
 /* 結果 */
 #vResult{justify-content:center;padding-top:max(56px,calc(env(safe-area-inset-top) + 50px))}
@@ -153,8 +138,8 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
 #rPhoto{flex:none;width:clamp(84px,24vw,128px);height:clamp(84px,24vw,128px);border:3px solid var(--ink);border-radius:14px;background:#ddd}
 .resNum{flex:1;min-width:0;text-align:center;padding-right:58px}
 .resNum small{display:block;font-size:13px;font-weight:900}
-.resNum .pct{font-family:var(--disp);font-size:clamp(46px,14vw,76px);line-height:1;color:var(--red)}
-.resNum .pct span{font-size:.45em}
+.resNum .pct{font-family:var(--disp);font-size:clamp(46px,14vw,76px);line-height:1;color:var(--red);white-space:nowrap}
+.resNum .pct span{font-size:.4em}
 .rank{font-family:var(--disp);font-size:clamp(18px,5.4vw,24px);text-align:center;line-height:1.25}
 .stamp{position:absolute;right:8px;top:8px;width:76px;height:76px;border:5px solid var(--red);color:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-size:18px;line-height:1.05;text-align:center;transform:rotate(-14deg) scale(0);opacity:0;background:rgba(255,248,236,.85)}
 .stamp.on{animation:slam .35s cubic-bezier(.3,1.6,.5,1) forwards}
@@ -162,7 +147,10 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
 .db{width:100%;background:var(--ink);color:var(--paper);border-radius:12px;padding:6px 10px;text-align:center}
 .db small{display:block;font-size:11px;font-weight:900;color:var(--yel)}
 .db b{font-family:var(--disp);font-weight:400;font-size:clamp(26px,8vw,36px);line-height:1.1}
-.db .cmp{display:block;font-size:12px;font-weight:700}
+#rReach{display:block;font-size:clamp(18px,5.6vw,26px);line-height:1.2;margin:2px 0 6px}
+#rReach::first-letter{text-transform:uppercase}
+.db .stRow div{color:var(--ink)}
+.db .cmp{display:block;font-size:12px;font-weight:700;color:var(--paper-dk)}
 .stRow{display:flex;gap:6px;width:100%}
 .stRow div{flex:1;border:2px solid var(--ink);border-radius:10px;padding:4px 2px;text-align:center;font-size:11px;font-weight:900;line-height:1.3;background:#fff}
 .stRow div b{display:block;font-family:var(--disp);font-weight:400;font-size:17px}
@@ -185,17 +173,7 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
 .verdict.perfect{background:var(--yel)}
 .verdict.safe{background:#7dffe9}
 .verdict.sus{background:#ffb35c}
-.verdict.busted,.verdict.explode,.verdict.smell,.verdict.blameFail,.verdict.sayFail{background:var(--red);color:#fff}
-.verdict.blamed,.verdict.sayOk,.verdict.exit{background:#b9f07a}
-.verdict.blameMiss{background:#ddd}
-.sb.mine{background:var(--yel)}
-.sx{display:flex;gap:6px;width:100%}
-.sx span{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;border:2px solid var(--ink);border-radius:10px;padding:3px 4px;font-size:12px;font-weight:900;background:#fff;white-space:nowrap;min-width:0}
-.sx span.bad{background:#ffe1dc;color:var(--red-dk)}
-.sx svg{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.paxL{width:100%;text-align:center;font-size:11px;font-weight:700;line-height:1.35;min-width:0}
-.paxL span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.paxL b{display:block;color:var(--red-dk);font-size:12px}
+.verdict.busted,.verdict.explode{background:var(--red);color:#fff}
 
 /* 小さい縦画面 */
 @media (max-height:700px){
@@ -203,11 +181,8 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
   .bubble{font-size:13px;padding:7px 10px}
   .btn{min-height:48px;font-size:16px}.btn.red{min-height:54px;font-size:19px}
   .step{font-size:13px}.step svg{width:38px;height:38px}
-  #bHold{width:72px;height:72px}#bHold svg{width:38px;height:38px}
-  .ruse{min-height:46px}.ruse svg{width:19px;height:19px}
-  .hint{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 160px)}
-  .db b{font-size:24px}.resNum .pct{font-size:52px}#rPhoto{width:84px;height:84px}
-  .paxL span{display:none}.resCard{gap:4px;padding:10px 12px}.cmt{font-size:12px}.bubble{line-height:1.45}
+  .snz.k0{height:70px}.snz.k1{height:78px}.snz.k2{height:88px}
+  .hint{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 104px)}
 }
 /* 背の低い横画面 */
 @media (max-height:560px) and (orientation:landscape){
@@ -221,14 +196,13 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
   .panel{padding:10px 14px}.panel h2{font-size:18px;margin-bottom:4px}
   .steps{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}
   .step{font-size:12px}.step svg{width:34px;height:34px}
-  .evList{margin-top:6px}
+  .kindList{margin-top:6px}
   #vHow{flex-direction:column}
-  #bHold{width:64px;height:64px}#bHold svg{width:34px;height:34px}
-  .hudBot{flex-direction:row;align-items:flex-end;justify-content:center;gap:10px}
-  .ruses{display:grid;grid-template-columns:1fr 1fr;width:200px;flex:none;gap:6px}
-  .ruse{min-height:38px;flex-direction:row;gap:4px;font-size:11px}.ruse svg{width:17px;height:17px}
-  .botRow{width:auto;flex:1;max-width:400px}
-  .hint{bottom:auto;top:60px}
+  .snzRow{width:min(460px,calc(100% - 20px))}
+  .snz.k0{height:66px}.snz.k1{height:70px}.snz.k2{height:78px}
+  .snz .ic{height:20px}.snz.k2 .ic{height:24px}
+  .hint{bottom:calc(max(10px,env(safe-area-inset-bottom)) + 88px)}
+  .place{top:max(10px,env(safe-area-inset-top))}
   .card{padding:10px 14px;gap:6px;width:min(560px,calc(100% - 32px))}
   .card h3{font-size:28px}.card p{font-size:13px}
   #vResult{padding-top:max(10px,env(safe-area-inset-top))}
@@ -245,7 +219,7 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
 .resSide{width:100%;display:flex;flex-direction:column;gap:8px}
 @media (min-width:900px) and (min-height:700px){
   .hudTop{padding-top:16px;padding-left:16px}
-  .noise{max-width:440px}
+  .stat{padding:7px 14px 7px 10px}.lives i{width:28px;height:28px}.pts{font-size:26px}
 }
 #boot-err{position:fixed;inset:auto 8px 8px 8px;z-index:99;background:#fff;color:#b00;font:12px/1.4 monospace;white-space:pre-wrap;padding:10px;border-radius:8px}
 </style>
@@ -254,7 +228,9 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
 <body>
 <canvas id="gl"></canvas>
 <div id="vignette"></div>
+<div id="quake"></div>
 <div id="fx"></div>
+<div id="fade"></div>
 
 <div id="corner">
   <button id="bLang" type="button" aria-label="Language"><span id="langTxt">EN</span></button>
@@ -277,50 +253,19 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
   <div class="panel">
     <h2 data-t="howT"></h2>
     <div class="steps" id="howSteps"></div>
-    <div class="evList" id="evList"></div>
+    <div class="kindList" id="kindList"></div>
   </div>
   <button class="btn" id="bHowBack" type="button" data-t="back"></button>
 </main>
 
 <main id="vPlay" class="view" hidden>
-  <div class="hudTop">
-    <div class="stChip"><small id="hStage"></small><b id="hTime">18</b></div>
-    <div class="noise"><div class="lab"><span data-t="noise"></span><span class="evi" id="hEv"></span></div><div class="nbar" id="nBar"><div class="zone"></div><div class="zone2"></div><i></i></div><div class="cov" id="hCov"></div></div>
-  </div>
-  <div class="hudBot">
-    <div class="ruses" id="ruses">
-      <button type="button" class="ruse" id="r_cough"><svg viewBox="0 0 24 24"><circle cx="9" cy="11" r="6"/><path d="M15 9l5-2M15 12h6M15 15l5 2"/><path d="M7 13h4"/></svg><span class="rl"></span><span class="rn"></span></button>
-      <button type="button" class="ruse" id="r_blame"><svg viewBox="0 0 24 24"><path d="M2 12h10M8 8l4 4-4 4"/><circle cx="18" cy="8" r="3"/><path d="M14 20a4 4 0 0 1 8 0"/></svg><span class="rl"></span><span class="rn"></span></button>
-      <button type="button" class="ruse" id="r_say"><svg viewBox="0 0 24 24"><path d="M4 5h16v10H10l-5 4v-4H4z"/><path d="M10 8a2 2 0 1 1 2 2v1M12 13h.01"/></svg><span class="rl"></span><span class="rn"></span></button>
-      <button type="button" class="ruse" id="r_exit"><svg viewBox="0 0 24 24"><path d="M4 3h10v18H4z"/><path d="M11 12h10M17 8l4 4-4 4"/></svg><span class="rl"></span><span class="rn"></span></button>
-    </div>
-    <div class="botRow">
-      <div class="gauges">
-        <div class="g"><span class="lab" data-t="itch"></span><div class="gbar" id="gItch"><i></i><span class="mark" data-l="ぷ"></span></div></div>
-        <div class="g"><span class="lab" data-t="strain"></span><div class="gbar" id="gStrain"><i></i></div></div>
-        <div class="g"><span class="lab" data-t="smell"></span><div class="gbar" id="gSmell"><i></i></div></div>
-        <div class="g"><span class="lab" data-t="sniff"></span><div class="gbar" id="gSniff"><i></i></div></div>
-      </div>
-      <div id="bHold" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 26c0-8 6-14 14-14s14 6 14 14-6 12-14 12-14-4-14-12z"/><path d="M24 14v22"/><path d="M6 12l4 3M42 12l-4 3M24 4v4"/></svg>
-        <span id="holdLab"></span>
-      </div>
-    </div>
-  </div>
+  <div class="hudTop"><div class="stat"><span class="lives" id="hLives"></span><span class="pts"><b id="hPts">0</b><small data-t="ptsU"></small></span></div></div>
+  <div class="place" id="hPlace" hidden></div>
   <div class="hint" id="hint" hidden></div>
-  <div id="count" hidden></div>
-  <div class="card" id="introCard" hidden>
-    <span class="no" id="iNo"></span>
-    <h3 id="iName"></h3>
-    <p id="iSub"></p>
-    <div class="ctrl" id="iCtrl"></div>
-    <button class="btn red" id="bGo" type="button" data-t="go"></button>
-  </div>
-  <div class="card" id="endCard" hidden>
-    <span class="no" data-t="stageClear"></span>
-    <h3 id="eName"></h3>
-    <p class="tally" id="eTally"></p>
-    <p id="eSub"></p>
+  <div class="snzRow" id="snzRow">
+    <button class="snz k0 ready" type="button"><kbd>1</kbd><span class="ic"></span><span class="nm"></span><span class="pt"></span></button>
+    <button class="snz k1 ready" type="button"><kbd>2</kbd><span class="ic"></span><span class="nm"></span><span class="pt"></span></button>
+    <button class="snz k2 ready" type="button"><kbd>3</kbd><span class="ic"></span><span class="nm"></span><span class="pt"></span></button>
   </div>
 </main>
 
@@ -330,13 +275,10 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
       <div class="stamp" id="rStamp"></div>
       <div class="resTop">
         <canvas id="rPhoto" width="256" height="256"></canvas>
-        <div class="resNum"><small data-t="ninja"></small><div class="pct"><b id="rPct">0</b><span data-t="unit"></span></div></div>
+        <div class="resNum"><small data-t="ptsLab"></small><div class="pct"><b id="rPts">0</b><span id="rUnit"></span></div></div>
       </div>
       <div class="rank reveal" id="rRank"></div>
-      <div class="db reveal" id="rDb"><small data-t="maxDb"></small><b id="rDbN"></b><span class="cmp" id="rDbC"></span></div>
-      <div class="sx reveal" id="rSx"></div>
-      <div class="paxL reveal" id="rPax"></div>
-      <div class="stRow reveal" id="rStages"></div>
+      <div class="db reveal" id="rDb"><b id="rReach"></b><div class="stRow" id="rKinds"></div></div>
     </div>
     <div class="resSide">
       <div class="mc reveal" id="rMc"><svg class="face" viewBox="0 0 48 48" data-face="mc"></svg><div class="bubble"><small data-t="mcName"></small><span id="rCmt"></span></div></div>
@@ -369,7 +311,7 @@ html[lang=ja] .logo .main b{font-family:var(--disp)}
   },6000);
 })();
 </script>
-<script src="data.js?v=6"></script>
-<script type="module" src="game.js?v=6"></script>
+<script src="data.js?v=7"></script>
+<script type="module" src="game.js?v=7"></script>
 </body>
 </html>
