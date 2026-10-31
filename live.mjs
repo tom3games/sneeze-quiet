@@ -10,14 +10,14 @@ for (const [name, bt, opts] of [['chromium', chromium, {}], ['webkit', webkit, {
   p.on('requestfailed', r => errs.push('fail ' + r.url()))
   await p.goto(URL0 + '?t=' + Date.now(), { waitUntil: 'networkidle' })
   await p.waitForFunction(() => window.__hsReady, null, { timeout: 15000 })
-  // 遊びの通し（タイトル → 遊ぶ → くしゃみ → 結果）
+  // 遊びの通し（タイトル → 乗りこむ → チャイムにかぶせてブッ → 誤魔化し → 結果）
   if (opts.hasTouch) await p.tap('#bStart'); else await p.click('#bStart')
   if (opts.hasTouch) await p.tap('#bGo'); else await p.click('#bGo')
-  const r = await p.evaluate(() => { hs.dbg.pause(); hs.dbg.step(150); hs.press(); hs.dbg.toPeak(0, 0.15); hs.S.downAt = -1e9; hs.release(); hs.dbg.step(30); hs.toResult(); hs.finishReveal(); hs.dbg.render(); return hs.S.rec.map(x => x.rating).join(',') })
+  const r = await p.evaluate(() => { hs.dbg.pause(); hs.dbg.step(150); hs.press(); hs.dbg.toPeak(0, 0.15); hs.S.downAt = -1e9; hs.release(); hs.dbg.step(30); const ru = hs.useRuse('say'); hs.dbg.step(60); hs.toResult(); hs.finishReveal(); hs.dbg.render(); return hs.S.rec.map(x => x.rating).join(',') + ' ruse=' + ru + ' n=' + hs.S.result.n + ' title=' + document.title + ' x=' + hs.xPost().text })
   await p.waitForTimeout(500)
   out.push(`${name}: play=${r}`)
   await p.screenshot({ path: `shots/live-${name}.png` })
-  const og = await p.evaluate(async () => { const r = await fetch(document.querySelector('meta[property="og:image"]').content); return r.status + ' ' + r.headers.get('content-type') })
+  const og = await p.evaluate(async () => { const r = await fetch(document.querySelector('meta[property="og:image"]').content); const b = await r.arrayBuffer(); return r.status + ' ' + r.headers.get('content-type') + ' ' + b.byteLength + 'B' })
   out.push(`${name}: og=${og} errors=${errs.length ? errs.join(' | ') : 'none'}`)
   await b.close()
 }
