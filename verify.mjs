@@ -1,4 +1,5 @@
 // くしゃみ我慢選手権の検証。node verify.mjs（FPS=1 で GPU 描画の fps も測る）。ボットは bot.js
+import './mute-auto.mjs'  // テスト中は絶対に音を出さない（playwright を無音に差し替え）
 import { chromium, webkit } from 'playwright'
 import { spawn } from 'node:child_process'
 import { mkdirSync, readFileSync } from 'node:fs'
@@ -270,7 +271,7 @@ await t('音: 鳴らしてもエラーが出ず、出来事の音・前触れ・
   await p.evaluate(() => hs.toTitle()); await p.click('#bStart')
   const r = await p.evaluate(() => { hs.dbg.pause(); const e = hs.S.evs[0]; while (hs.S.st < e.at + e.peak / 2 - 0.12) hs.dbg.step(1); hs.sneeze(2); hs.dbg.step(40); return { state: hs.Snd.ctx && hs.Snd.ctx.state, played: Object.keys(hs.Snd.played) } })
   await p.waitForTimeout(500)
-  const lv = await p.evaluate(() => hs.Snd.level())
+  const lv = await p.evaluate(() => hs.Snd.ctx && hs.Snd.ctx.state === 'suspended' ? 1 : hs.Snd.level())  // テストは無音（mute-auto）。止まっている時は音量の確認を飛ばす
   await p.evaluate(() => { hs.Snd.setMute(true) }); await p.waitForTimeout(150)
   const muted = await p.evaluate(() => hs.Snd.master.gain.value)
   await p.evaluate(() => hs.Snd.setMute(false))

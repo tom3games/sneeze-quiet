@@ -1,5 +1,6 @@
 // 公開URLの確認。node live.mjs（ログインしていないブラウザで見る）。SKIPGH=1 で GitHub ページの確認を省く
 // sneeze-quiet hs を置き換え、「遊びの通し」をゲームに合わせて書く
+import './mute-auto.mjs'  // テスト中は絶対に音を出さない（playwright を無音に差し替え）
 import { chromium, webkit } from 'playwright'
 const URL0 = 'https://tom3games.github.io/sneeze-quiet/'
 const out = []
