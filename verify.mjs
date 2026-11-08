@@ -107,9 +107,9 @@ await t('OGP 一式がある（og:image は公開URL・1200x630 の og.png）', 
   const r = await p.evaluate(async () => {
     const g = k => (document.querySelector(`meta[property="${k}"]`) || document.querySelector(`meta[name="${k}"]`) || {}).content
     const img = new Image(); img.src = 'og.png'; await img.decode().catch(() => {})
-    return { title: g('og:title'), desc: g('og:description'), image: g('og:image'), url: g('og:url'), type: g('og:type'), card: g('twitter:card'), w: img.naturalWidth, h: img.naturalHeight, v: [...document.scripts].map(s => s.src).filter(Boolean).map(s => s.split('?v=')[1]) }
+    return { title: g('og:title'), desc: g('og:description'), image: g('og:image'), url: g('og:url'), type: g('og:type'), card: g('twitter:card'), w: img.naturalWidth, h: img.naturalHeight, v: [...document.scripts].map(s => s.src).filter(s => s && !/support\.js/.test(s)).map(s => s.split('?v=')[1]) }
   })
-  expect(r.title && /特大/.test(r.desc) && r.image === 'https://tom3games.github.io/sneeze-quiet/og.png?v=7' && r.url === 'https://tom3games.github.io/sneeze-quiet/' && r.type === 'website' && r.card === 'summary_large_image' && r.w === 1200 && r.h === 630 && r.v.join() === '7,7', JSON.stringify(r)); return { w: r.w, h: r.h, v: r.v }
+  expect(r.title && /特大/.test(r.desc) && r.image === 'https://tom3games.github.io/sneeze-quiet/og.png?v=7' && r.url === 'https://tom3games.github.io/sneeze-quiet/' && r.type === 'website' && r.card === 'summary_large_image' && r.w === 1200 && r.h === 630 && r.v.length >= 2 && r.v[0] === r.v[1] && +r.v[0] >= 8, JSON.stringify(r)); return { w: r.w, h: r.h, v: r.v }
 })
 await t('3D が描けている（画面の色が散らばっている）', async () => {
   const buf = await p.screenshot(); const r = await p.evaluate(async b64 => {
@@ -255,9 +255,11 @@ await t('英語に切り替えると全部の文言が英語になる', async ()
     const title = document.querySelector('.logo').textContent, start = document.querySelector('#bStart').textContent
     hs.start(); hs.dbg.step(5); const play = document.querySelector('#vPlay').innerText
     hs.toResult(); hs.finishReveal(); const rank = document.querySelector('#rRank').textContent, save = document.querySelector('#bSave').textContent
-    const ja = /[぀-ヿ一-鿿]/.test(document.querySelector('#vResult').innerText + title + start + play)
-    return { title, start, play: play.replace(/\s+/g, ' ').slice(0, 120), rank, save, ja }
+    return { title, start, play: play.replace(/\s+/g, ' ').slice(0, 120), rank, save }
   })
+  // 支援ボタン（support.js）は「もう一度」の文字の変化を MutationObserver で拾って言語を変える（非同期）ので、1拍おいてから日本語が残っていないか見る
+  await p.waitForTimeout(100)
+  r.ja = await p.evaluate(t => /[぀-ヿ一-鿿]/.test(document.querySelector('#vResult').innerText + t), r.title + r.start + r.play)
   await p.screenshot({ path: ROOT + '/shots/result-en.png' })
   await p.evaluate(() => hs.setLang('ja'))
   expect(/SNEEZE/.test(r.title) && r.start === 'Enter' && /KA-CHOOO/.test(r.play) && r.rank && !r.ja, JSON.stringify(r)); return r
