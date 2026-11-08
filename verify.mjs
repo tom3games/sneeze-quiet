@@ -109,7 +109,7 @@ await t('OGP 一式がある（og:image は公開URL・1200x630 の og.png）', 
     const img = new Image(); img.src = 'og.png'; await img.decode().catch(() => {})
     return { title: g('og:title'), desc: g('og:description'), image: g('og:image'), url: g('og:url'), type: g('og:type'), card: g('twitter:card'), w: img.naturalWidth, h: img.naturalHeight, v: [...document.scripts].map(s => s.src).filter(s => s && !/support\.js/.test(s)).map(s => s.split('?v=')[1]) }
   })
-  expect(r.title && /特大/.test(r.desc) && r.image === 'https://tom3games.github.io/sneeze-quiet/og.png?v=7' && r.url === 'https://tom3games.github.io/sneeze-quiet/' && r.type === 'website' && r.card === 'summary_large_image' && r.w === 1200 && r.h === 630 && r.v.length >= 2 && r.v[0] === r.v[1] && +r.v[0] >= 8, JSON.stringify(r)); return { w: r.w, h: r.h, v: r.v }
+  expect(r.title && /特大/.test(r.desc) && r.image === 'https://tom3games.com/play/sneeze-quiet/og.png?v=7' && r.url === 'https://tom3games.com/play/sneeze-quiet/' && r.type === 'website' && r.card === 'summary_large_image' && r.w === 1200 && r.h === 630 && r.v.length >= 2 && r.v[0] === r.v[1] && +r.v[0] >= 8, JSON.stringify(r)); return { w: r.w, h: r.h, v: r.v }
 })
 await t('3D が描けている（画面の色が散らばっている）', async () => {
   const buf = await p.screenshot(); const r = await p.evaluate(async b64 => {
