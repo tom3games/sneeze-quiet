@@ -39,7 +39,7 @@ button{font-family:inherit;color:inherit;font-size:inherit;-webkit-user-select:n
 #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(20,10,25,.55) 100%)}
 
 /* 共通部品 */
-.view{position:fixed;inset:0;z-index:10;height:100svh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:max(58px,calc(env(safe-area-inset-top) + 52px)) 16px max(18px,calc(env(safe-area-inset-bottom) + 12px))}
+.view{position:fixed;inset:0;z-index:10;height:100svh;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:max(58px,calc(env(safe-area-inset-top) + 52px)) 16px max(18px,calc(calc(env(safe-area-inset-bottom) + var(--inapp-bot,0px)) + 12px))}
 .btn{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:900;font-size:18px;letter-spacing:.04em;border:3px solid var(--ink);border-radius:16px;min-height:54px;padding:0 20px;cursor:pointer;width:100%;
   background:var(--paper);color:var(--ink);box-shadow:0 5px 0 var(--ink);transition:transform .06s,box-shadow .06s}
 .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
@@ -101,7 +101,7 @@ html[lang=ja] #rReach,html[lang=ja] .logo .main,html[lang=ja] .logo .main b,html
 .place{position:absolute;left:50%;top:max(60px,calc(env(safe-area-inset-top) + 54px));transform:translateX(-50%);font-family:var(--disp);font-size:20px;color:var(--ink);background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:4px 14px;box-shadow:0 4px 0 var(--ink);white-space:nowrap;pointer-events:none}
 .place.go{animation:placeIn 2.6s ease forwards}
 @keyframes placeIn{0%{opacity:0;transform:translate(-50%,-14px)}12%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0}}
-.snzRow{position:absolute;left:50%;transform:translateX(-50%);bottom:max(12px,calc(env(safe-area-inset-bottom) + 8px));width:min(500px,calc(100% - 20px));display:flex;gap:10px;align-items:flex-end}
+.snzRow{position:absolute;left:50%;transform:translateX(-50%);bottom:max(12px,calc(calc(env(safe-area-inset-bottom) + var(--inapp-bot,0px)) + 8px));width:min(500px,calc(100% - 20px));display:flex;gap:10px;align-items:flex-end}
 .snz{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:3px solid var(--ink);border-radius:20px;background:var(--paper);color:var(--ink);box-shadow:0 5px 0 var(--ink);cursor:pointer;overflow:hidden;padding:4px 2px;transition:transform .05s,box-shadow .05s,filter .15s;touch-action:none}
 .snz.k0{height:78px}.snz.k1{height:88px;background:var(--yel)}.snz.k2{flex:1.25;height:100px;background:var(--red);color:#fff}
 .snz .ic{display:block;width:38px;height:30px}.snz.k2 .ic{width:46px;height:36px}
@@ -120,7 +120,7 @@ html[lang=ja] #rReach,html[lang=ja] .logo .main,html[lang=ja] .logo .main b,html
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
 .snz.now{animation:nowPulse .45s ease-in-out infinite alternate}
 @keyframes nowPulse{to{transform:translateY(-6px);box-shadow:0 11px 0 var(--ink),0 0 0 6px var(--yel)}}
-.hint{position:absolute;left:50%;bottom:calc(max(12px,env(safe-area-inset-bottom)) + 124px);transform:translateX(-50%);max-width:calc(100% - 24px);background:var(--yel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:6px 12px;font-weight:900;font-size:14px;text-align:center;pointer-events:none;animation:bob .6s ease-in-out infinite alternate}
+.hint{position:absolute;left:50%;bottom:calc(max(12px,calc(env(safe-area-inset-bottom) + var(--inapp-bot,0px))) + 124px);transform:translateX(-50%);max-width:calc(100% - 24px);background:var(--yel);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:6px 12px;font-weight:900;font-size:14px;text-align:center;pointer-events:none;animation:bob .6s ease-in-out infinite alternate}
 .hint[data-k=now]{background:var(--red);color:#fff;font-family:var(--disp);font-weight:400;font-size:20px}
 @keyframes bob{to{transform:translate(-50%,-6px)}}
 #fade{position:fixed;inset:0;z-index:8;background:#140f18;opacity:0;pointer-events:none;transition:opacity .4s}
@@ -185,11 +185,11 @@ html[lang=ja] #rReach,html[lang=ja] .logo .main,html[lang=ja] .logo .main b,html
   .btn{min-height:48px;font-size:16px}.btn.red{min-height:54px;font-size:19px}
   .step{font-size:13px}.step svg{width:38px;height:38px}
   .snz.k0{height:70px}.snz.k1{height:78px}.snz.k2{height:88px}
-  .hint{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 104px)}
+  .hint{bottom:calc(max(12px,calc(env(safe-area-inset-bottom) + var(--inapp-bot,0px))) + 104px)}
 }
 /* 背の低い横画面 */
 @media (max-height:560px) and (orientation:landscape){
-  .view{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom))}
+  .view{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,calc(env(safe-area-inset-bottom) + var(--inapp-bot,0px)))}
   #vTitle{flex-direction:row;align-items:flex-end;justify-content:space-between;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
   #vTitle .logo{width:44%;text-align:left;align-self:flex-start;margin-top:4px}
   .logo .main{font-size:min(6.4vw,13vh,56px)}
@@ -204,7 +204,7 @@ html[lang=ja] #rReach,html[lang=ja] .logo .main,html[lang=ja] .logo .main b,html
   .snzRow{width:min(460px,calc(100% - 20px))}
   .snz.k0{height:66px}.snz.k1{height:70px}.snz.k2{height:78px}
   .snz .ic{height:20px}.snz.k2 .ic{height:24px}
-  .hint{bottom:calc(max(10px,env(safe-area-inset-bottom)) + 88px)}
+  .hint{bottom:calc(max(10px,calc(env(safe-area-inset-bottom) + var(--inapp-bot,0px))) + 88px)}
   .place{top:max(10px,env(safe-area-inset-top))}
   .card{padding:10px 14px;gap:6px;width:min(560px,calc(100% - 32px))}
   .card h3{font-size:28px}.card p{font-size:13px}
@@ -316,6 +316,6 @@ html[lang=ja] #rReach,html[lang=ja] .logo .main,html[lang=ja] .logo .main b,html
 </script>
 <script src="data.js?v=8"></script>
 <script type="module" src="game.js?v=8"></script>
-<script src="support.js?v=4" data-ja="ティッシュ" data-en="tissues"></script>
+<script src="support.js?v=5" data-ja="ティッシュ" data-en="tissues"></script>
 </body>
 </html>
